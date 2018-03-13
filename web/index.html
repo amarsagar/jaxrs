@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery.min.js"> </script>
+    </head>
+    <body>
+        <div>TODO write content</div>
+        <form>
+            <div>
+            <label>First Name </label>
+            <input type="text" id="first_name" class="first_name"/>
+            </div>
+            
+            <div>
+            <label>Last Name </label>
+            <input type="text" id="last_name" class="last_name"/>
+            </div>
+            
+            <div>
+            <label>Email </label>
+            <input type="text" id="email" class="email"/>
+            </div>
+            
+            <div>
+            <label>Status </label>
+            <input type="text" id="status" class="status"/>
+            </div>
+        </form>
+        
+        
+        
+        <ul id="result">
+            
+            
+        </ul>
+        <script>
+            $(document).on("ready", function(){
+            $.getJSON("http://localhost:8080/jaxrsapi/api/studentapi/list",function(data){
+                var $result=$("#result");
+                var content="";
+                $.each(data,function(i,o){
+                    
+                   content +="<li class='row' rel='"+o.id+"'>" + o.firstName + " " + o.lastName + " " + o.email + " " + o.status +
+                           "</li>"
+                });
+                $result.html(content);
+                $(".row").on('click',function(){
+                    var id=$(this).attr("rel");
+                  $.getJSON("http://localhost:8080/jaxrsapi/api/studentapi/"+id,function(data){
+                     $("#first_name").val(data.firstName);
+                     $("#last_name").val(data.lastName);
+                     $("#email").val(data.email);
+                     $("#status").val(data.status);
+                    
+                     });
+                });
+            });            
+            });
+        </script>
+          
+    </body>
+</html>
